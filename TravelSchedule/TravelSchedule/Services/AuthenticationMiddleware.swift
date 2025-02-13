@@ -1,9 +1,3 @@
-//
-//  AuthenticationMiddleware.swift
-//  TravelSchedule
-//
-//  Created by Mac on 11.02.2025.
-//
 
 import OpenAPIRuntime
 import OpenAPIURLSession
