@@ -10,15 +10,30 @@ import SwiftUI
 struct ContentView: View {
     
     var body: some View {
-        VStack{
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello")
+        TabView{
+            VStack{
+                Color.gray.edgesIgnoringSafeArea(.top)
+                Text("Красная вкладка")
+                    .font(.largeTitle)
+                    .foregroundColor(.white)
+                
+            }
+            .tabItem{
+                Label("Красный",systemImage: "1.square.fill")
+            }
+            VStack{
+                Color.blue.edgesIgnoringSafeArea(.top)
+                Text("Синяя вкладка")
+                    .font(.largeTitle)
+                    .foregroundColor(.white)
+                
+            }
+            .tabItem{
+                Label("Синий",systemImage: "2.square.fill")
+            }
         }
-        .padding()
-        
     }
+     
 }
 
 #Preview {
