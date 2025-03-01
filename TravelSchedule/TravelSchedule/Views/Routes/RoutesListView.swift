@@ -1,9 +1,3 @@
-//
-//  RoutesListView.swift
-//  Travel Schedule
-//
-//  Created by Niykee Moore on 13.01.2025.
-//
 
 import SwiftUI
 
