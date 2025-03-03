@@ -21,12 +21,5 @@
 			</array>
 		</dict>
 	</dict>
-	<key>UILaunchScreen</key>
-	<dict>
-		<key>UIImageName</key>
-		<string>LaunchScreen.png</string>
-		<key>UIImageRespectsSafeAreaInsets</key>
-		<false/>
-	</dict>
 </dict>
 </plist>
