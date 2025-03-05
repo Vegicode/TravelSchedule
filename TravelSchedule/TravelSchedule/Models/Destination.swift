@@ -1,3 +1,9 @@
+//
+//  Destination.swift
+//  Travel Schedule
+//
+//  Created by Niykee Moore on 13.01.2025.
+//
 
 import Foundation
 
@@ -8,10 +14,13 @@ struct Destination: Hashable, Identifiable {
 }
 
 extension Destination {
-    static var emptyDestination = [Destination(), Destination()]
+    static var emptyDestinations: [JourneyType: Destination] = [
+        .departure: Destination(),
+        .arrival: Destination()
+    ]
 
-    static let sampleData: [Destination] = [
-        Destination(cityTitle: "Москва", stationTitle: "Ярославский Вокзал"),
-        Destination(cityTitle: "Санкт-Петербург", stationTitle: "Балтийский вокзал")
+    static let sampleData: [JourneyType: Destination] = [
+        .departure: Destination(cityTitle: "Москва", stationTitle: "Ярославский Вокзал"),
+        .arrival: Destination(cityTitle: "Санкт-Петербург", stationTitle: "Балтийский вокзал")
     ]
 }
