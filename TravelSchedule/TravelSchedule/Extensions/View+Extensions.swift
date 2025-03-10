@@ -1,3 +1,9 @@
+//
+//  View+Extensions.swift
+//  Travel Schedule
+//
+//  Created by Niykee Moore on 13.01.2025.
+//
 
 import SwiftUI
 
@@ -12,5 +18,9 @@ extension View {
     
     func setCustomNavigationBar(title: String = "") -> some View {
         modifier(SetCustomNavigationBar(title: title))
+    }
+    
+    func setCustomButton(width: CGFloat? = nil, padding: Edge.Set) -> some View {
+        modifier(SetCustomButton(width: width, padding: padding))
     }
 }

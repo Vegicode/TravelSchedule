@@ -1,3 +1,9 @@
+//
+//  Filter.swift
+//  Travel Schedule
+//
+//  Created by Niykee Moore on 13.01.2025.
+//
 
 import Foundation
 
@@ -11,4 +17,5 @@ struct Filter: Hashable {
 
 extension Filter {
     static let fullSearch = Filter()
+    static let customSearch = Filter(isWithTransfers: false, isMorning: false)
 }
