@@ -4,7 +4,7 @@ import Foundation
 @MainActor
 final class TravelViewModel: ObservableObject {
     @Published var copyrightInfo = ""
-    @Published private(set) var cities: [City] = []
+   
     @Published private(set) var stations: [Station] = []
     @Published private(set) var countries: [Components.Schemas.Countries] = []
     @Published private(set) var state: State = .loading
@@ -44,35 +44,7 @@ final class TravelViewModel: ObservableObject {
         }
     }
     
-    func fetchCities() {
-        Task {
-            state = .loading
-            var newList: [City] = []
-            guard
-                let store,
-                let countries = store.countries else { return }
-            countries.forEach {
-                $0.regions?.forEach {
-                    $0.settlements?.forEach { settlement in
-                        guard
-                            let settlementTitle = settlement.title,
-                            let settlementCodes = settlement.codes,
-                            let yandexCode = settlementCodes.yandex_code,
-                            let settlementStations = settlement.stations else { return }
-                        newList.append(
-                            City(
-                                title: settlementTitle,
-                                yandexCode: yandexCode,
-                                stationsCount: settlementStations.count
-                            )
-                        )
-                    }
-                }
-            }
-            cities = newList.sorted { $0.stationsCount > $1.stationsCount }
-            state = .loaded
-        }
-    }
+
     
     private func loadData() async {
         async let copyrightCall: Void = getCopyright()

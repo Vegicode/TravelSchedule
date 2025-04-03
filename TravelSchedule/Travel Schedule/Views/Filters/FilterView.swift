@@ -1,15 +1,15 @@
-
 import SwiftUI
 
 struct FilterView: View {
     // MARK: - Constants
+    
     private let timeSectionTitle = "Время отправления"
     private let connectionSectionTitle = "Показывать варианты с пересадками"
     private let buttonTitle = "Применить"
     
     // MARK: - Properties
-    @Binding var viewModelFilter: Filter
-    @State var currentFilter = Filter()
+    
+    @ObservedObject var viewModel: FilterViewModel
     
     @Environment(\.presentationMode) var presentationMode
     
@@ -19,13 +19,13 @@ struct FilterView: View {
             timeSectionView
             connectionSectionView
             Spacer()
-            if currentFilter != viewModelFilter {
+            if viewModel.currentFilter != viewModel.viewModelFilter {
                 buttonView
             }
         }
         .setCustomNavigationBar()
         .onAppear {
-            loadFilter()
+            viewModel.loadFilter()
         }
     }
 }
@@ -51,7 +51,7 @@ private extension FilterView {
     
     var buttonView: some View {
         Button {
-            saveFilter()
+            viewModel.saveFilter()
             self.presentationMode.wrappedValue.dismiss()
         } label: {
             Text(buttonTitle)
@@ -68,26 +68,19 @@ private extension FilterView {
             .padding(AppSizes.Spacing.large)
     }
     
-    func loadFilter() {
-        currentFilter = viewModelFilter
-    }
-    
-    func saveFilter() {
-        viewModelFilter = currentFilter
-    }
 }
 
 private extension FilterView {
     var morningBinding: Binding<Bool> {
         Binding(
-            get: { self.currentFilter.isMorning },
+            get: { self.viewModel.currentFilter.isMorning },
             set: { newValue in
-                self.currentFilter = Filter(
-                    isWithTransfers: self.currentFilter.isWithTransfers,
-                    isAtNight: self.currentFilter.isAtNight,
+                self.viewModel.currentFilter = Filter(
+                    isWithTransfers: self.viewModel.currentFilter.isWithTransfers,
+                    isAtNight: self.viewModel.currentFilter.isAtNight,
                     isMorning: newValue,
-                    isAfternoon: self.currentFilter.isAfternoon,
-                    isEvening: self.currentFilter.isEvening
+                    isAfternoon: self.viewModel.currentFilter.isAfternoon,
+                    isEvening: self.viewModel.currentFilter.isEvening
                 )
             }
         )
@@ -95,14 +88,14 @@ private extension FilterView {
     
     var afternoonBinding: Binding<Bool> {
         Binding(
-            get: { self.currentFilter.isAfternoon },
+            get: { self.viewModel.currentFilter.isAfternoon },
             set: { newValue in
-                self.currentFilter = Filter(
-                    isWithTransfers: self.currentFilter.isWithTransfers,
-                    isAtNight: self.currentFilter.isAtNight,
-                    isMorning: self.currentFilter.isMorning,
+                self.viewModel.currentFilter = Filter(
+                    isWithTransfers: self.viewModel.currentFilter.isWithTransfers,
+                    isAtNight: self.viewModel.currentFilter.isAtNight,
+                    isMorning: self.viewModel.currentFilter.isMorning,
                     isAfternoon: newValue,
-                    isEvening: self.currentFilter.isEvening
+                    isEvening: self.viewModel.currentFilter.isEvening
                 )
             }
         )
@@ -110,13 +103,13 @@ private extension FilterView {
     
     var eveningBinding: Binding<Bool> {
         Binding(
-            get: { self.currentFilter.isEvening },
+            get: { self.viewModel.currentFilter.isEvening },
             set: { newValue in
-                self.currentFilter = Filter(
-                    isWithTransfers: self.currentFilter.isWithTransfers,
-                    isAtNight: self.currentFilter.isAtNight,
-                    isMorning: self.currentFilter.isMorning,
-                    isAfternoon: self.currentFilter.isAfternoon,
+                self.viewModel.currentFilter = Filter(
+                    isWithTransfers: self.viewModel.currentFilter.isWithTransfers,
+                    isAtNight: self.viewModel.currentFilter.isAtNight,
+                    isMorning: self.viewModel.currentFilter.isMorning,
+                    isAfternoon: self.viewModel.currentFilter.isAfternoon,
                     isEvening: newValue
                 )
             }
@@ -125,14 +118,14 @@ private extension FilterView {
     
     var atNightBinding: Binding<Bool> {
         Binding(
-            get: { self.currentFilter.isAtNight },
+            get: { self.viewModel.currentFilter.isAtNight },
             set: { newValue in
-                self.currentFilter = Filter(
-                    isWithTransfers: self.currentFilter.isWithTransfers,
+                self.viewModel.currentFilter = Filter(
+                    isWithTransfers: self.viewModel.currentFilter.isWithTransfers,
                     isAtNight: newValue,
-                    isMorning: self.currentFilter.isMorning,
-                    isAfternoon: self.currentFilter.isAfternoon,
-                    isEvening: self.currentFilter.isEvening
+                    isMorning: self.viewModel.currentFilter.isMorning,
+                    isAfternoon: self.viewModel.currentFilter.isAfternoon,
+                    isEvening: self.viewModel.currentFilter.isEvening
                 )
             }
         )
@@ -140,22 +133,18 @@ private extension FilterView {
     
     var withTransfersBinding: Binding<Bool> {
         Binding(
-            get: { self.currentFilter.isWithTransfers },
+            get: { self.viewModel.currentFilter.isWithTransfers },
             set: { newValue in
-                self.currentFilter = Filter(
+                self.viewModel.currentFilter = Filter(
                     isWithTransfers: newValue,
-                    isAtNight: self.currentFilter.isAtNight,
-                    isMorning: self.currentFilter.isMorning,
-                    isAfternoon: self.currentFilter.isAfternoon,
-                    isEvening: self.currentFilter.isEvening
+                    isAtNight: self.viewModel.currentFilter.isAtNight,
+                    isMorning: self.viewModel.currentFilter.isMorning,
+                    isAfternoon: self.viewModel.currentFilter.isAfternoon,
+                    isEvening: self.viewModel.currentFilter.isEvening
                 )
             }
         )
     }
 }
 
-#Preview {
-    NavigationStack {
-        FilterView(viewModelFilter: .constant(Filter.customSearch))
-    }
-}
+

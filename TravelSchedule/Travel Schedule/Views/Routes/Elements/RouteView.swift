@@ -6,11 +6,13 @@ struct RouteView: View {
     let carrier: Carrier
     var imageDownloader: ImageDownloader
     @State private(set) var carrierIcon = Image(systemName: "nosign.app")
+    @ObservedObject var viewModel: RouteViewModel
 
     // MARK: - Body
     var body: some View {
         VStack(spacing: .zero) {
-            RouteCarrierView(route: route, carrier: carrier, carrierIcon: $carrierIcon)
+            RouteCarrierView(viewModel:RouteCarrierViewModel( route: route, carrier: carrier), carrierIcon: .constant(Image(systemName: "cablecar"))
+            )
             timelineView
         }
         .background(AppColors.Universal.lightGray)
@@ -66,7 +68,6 @@ private extension RouteView {
 }
 
 #Preview {
-    RouteView(route: Mocks.Routes.all[0],
-              carrier: Mocks.Carriers.rzhd,
-              imageDownloader: ImageDownloader())
+    RouteCarrierView(viewModel:RouteCarrierViewModel( route: Mocks.Routes.all[0], carrier: Mocks.Carriers.rzhd), carrierIcon: .constant(Image(systemName: "cablecar"))
+    )
 }

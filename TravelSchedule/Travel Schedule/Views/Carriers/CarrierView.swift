@@ -1,25 +1,25 @@
 
 import SwiftUI
 
+
+
 struct CarrierView: View {
     // MARK: - Properties
-    private let title = "Информация о перевозчике"
-    @State var carrier: Carrier
-    var imageDownloader: ImageDownloader
+    @ObservedObject var view: CarrierViewModel
     @Environment(\.openURL) private var openURL
-
+    
     // MARK: - Body
     var body: some View {
         VStack(alignment: .leading, spacing: .zero) {
             imageView
             titleView
-            show(info: carrier.email, for: .email)
-            show(info: carrier.phone, for: .phone)
-            show(info: carrier.contacts, for: .contacts)
+            show(info: view.carrier.email, for: .email)
+            show(info: view.carrier.phone, for: .phone)
+            show(info: view.carrier.contacts, for: .contacts)
             Spacer()
         }
         .padding(.horizontal, AppSizes.Spacing.large)
-        .setCustomNavigationBar(title: title)
+        .setCustomNavigationBar(title: view.title)
     }
 }
 
@@ -36,12 +36,12 @@ private extension CarrierView {
             }
         }
     }
-    var carrierTitle: String { "ОАО «\(carrier.title)»" }
-    var emailUrl: String { "mailto:" + carrier.email }
-    var phoneUrl: String { "tel:" + carrier.phone }
+    var carrierTitle: String { "ОАО «\(view.carrier.title)»" }
+    var emailUrl: String { "mailto:" + view.carrier.email }
+    var phoneUrl: String { "tel:" + view.carrier.phone }
 
     var imageView: some View {
-        AsyncImage(url: URL(string: carrier.logoUrl)) { image in
+        AsyncImage(url: URL(string: view.carrier.logoUrl)) { image in
             image
                 .resizable()
                 .scaledToFit()
@@ -54,7 +54,7 @@ private extension CarrierView {
     }
 
     var placeholderImageView: some View {
-        Image(systemName: carrier.placeholder)
+        Image(systemName: view.carrier.placeholder)
             .renderingMode(.template)
             .resizable()
             .scaledToFit()
@@ -78,7 +78,7 @@ private extension CarrierView {
             switch type {
                 case .email: showButton(for: .email)
                 case .phone: showButton(for: .phone)
-                case .contacts: show(info: carrier.contacts)
+            case .contacts: show(info: view.carrier.contacts)
             }
         }.frame(height: type == .contacts ? AppSizes.Height.row * 2 : AppSizes.Height.row)
     }
@@ -103,13 +103,14 @@ private extension CarrierView {
             guard let url = URL(string: type == .email ? emailUrl : phoneUrl) else { return }
             openURL(url)
         } label: {
-            show(info: type == .email ? carrier.email : carrier.phone)
+            show(info: type == .email ? view.carrier.email : view.carrier.phone)
         }
     }
 }
 
 #Preview {
     NavigationStack {
-        CarrierView(carrier: Mocks.Carriers.rzhd, imageDownloader: ImageDownloader())
+        CarrierView(view: CarrierViewModel(carrier: Mocks.Carriers.rzhd, imageDownloader: ImageDownloader()))
     }
 }
+

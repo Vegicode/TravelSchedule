@@ -1,6 +1,8 @@
  
 import SwiftUI
 
+import SwiftUI
+
 struct SearchBarView: View {
     // MARK: - Constants
     private let cornerRadius = AppSizes.CornerRadius.Custom.searchBar

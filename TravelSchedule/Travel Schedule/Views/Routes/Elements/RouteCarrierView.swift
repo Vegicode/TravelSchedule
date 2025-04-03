@@ -5,11 +5,11 @@ import SVGKit
 
 struct RouteCarrierView: View {
     // MARK: - Properties
-    let route: Route
-    let carrier: Carrier
+   
+    
+    @ObservedObject var viewModel: RouteCarrierViewModel
     @Binding var carrierIcon: Image
-
-    private var connectionInValue: String { "С пересадкой в \(route.connectionStation)" }
+   
 
     // MARK: - Body
     var body: some View {
@@ -17,7 +17,7 @@ struct RouteCarrierView: View {
             iconView
             VStack(alignment: .leading) {
                 carrierTitleView
-                if !route.isDirect {
+                if !viewModel.route.isDirect {
                     connectionInfoView
                 }
             }
@@ -37,25 +37,25 @@ private extension RouteCarrierView {
     }
 
     var carrierTitleView: some View {
-        Text(carrier.title)
+        Text(viewModel.carrier.title)
             .font(AppFonts.Regular.medium)
             .foregroundStyle(AppColors.Universal.black)
     }
 
     var connectionInfoView: some View {
-        Text(connectionInValue)
+        Text(viewModel.connectionInValue)
             .font(AppFonts.Regular.small)
             .foregroundStyle(AppColors.Universal.red)
     }
 
     var departureDateView: some View {
-        Text(route.date.getLocalizedShortDate)
+        Text(viewModel.route.date.getLocalizedShortDate)
             .font(AppFonts.Regular.small)
             .foregroundStyle(AppColors.Universal.black)
     }
 
     var placeholderImageView: some View {
-        Image(systemName: carrier.placeholder)
+        Image(systemName: viewModel.carrier.placeholder)
             .renderingMode(.template)
             .resizable()
             .scaledToFit()
@@ -65,10 +65,10 @@ private extension RouteCarrierView {
 }
 
 #Preview {
-    RouteCarrierView(
-        route: Mocks.Routes.all[0],
-        carrier: Mocks.Carriers.rzhd,
-        carrierIcon: .constant(Image(systemName: "cablecar"))
+    RouteCarrierView(viewModel:RouteCarrierViewModel( route: Mocks.Routes.all[0], carrier: Mocks.Carriers.rzhd), carrierIcon: .constant(Image(systemName: "cablecar"))
     )
         .background(AppColors.Universal.lightGray)
 }
+
+
+       
