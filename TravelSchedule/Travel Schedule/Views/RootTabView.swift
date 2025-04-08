@@ -96,7 +96,7 @@ private extension RootTabView {
                 destinations: destinationsViewModel.destinations,
                 routesDownloader: rootViewModel.routesDownloader,
                 imageDownloader: rootViewModel.imageDownloader
-            )
+            ), viewModel2: RouteViewModel(route: Mocks.Routes.all[0], carrier: Mocks.Carriers.rzhd, imageDownloader: ImageDownloader())
         )
         .toolbar(.hidden, for: .tabBar)
     }

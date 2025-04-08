@@ -2,16 +2,14 @@
 import SwiftUI
 
 struct RouteView: View {
-    let route: Route
-    let carrier: Carrier
-    var imageDownloader: ImageDownloader
-    @State private(set) var carrierIcon = Image(systemName: "nosign.app")
+    
+   
     @ObservedObject var viewModel: RouteViewModel
 
     // MARK: - Body
     var body: some View {
         VStack(spacing: .zero) {
-            RouteCarrierView(viewModel:RouteCarrierViewModel( route: route, carrier: carrier), carrierIcon: .constant(Image(systemName: "cablecar"))
+            RouteCarrierView(viewModel:RouteCarrierViewModel( route: viewModel.route, carrier: viewModel.carrier), carrierIcon: .constant(Image(systemName: "cablecar"))
             )
             timelineView
         }
@@ -19,10 +17,10 @@ struct RouteView: View {
         .frame(maxWidth: .infinity, maxHeight: AppSizes.Height.route)
         .clipShape(RoundedRectangle(cornerRadius: AppSizes.CornerRadius.xxLarge))
         .task {
-            let placeholderLogo = Image(systemName: carrier.placeholder)
-            self.carrierIcon = carrier.logoSVGUrl.isEmpty
-            ? await imageDownloader.fetchImage(from: carrier.logoUrl) ?? placeholderLogo
-            : await imageDownloader.fetchSvgImage(from: carrier.logoSVGUrl) ?? placeholderLogo
+            let placeholderLogo = Image(systemName: viewModel.carrier.placeholder)
+            viewModel.carrierIcon = viewModel.carrier.logoSVGUrl.isEmpty
+            ? await viewModel.imageDownloader.fetchImage(from: viewModel.carrier.logoUrl) ?? placeholderLogo
+            : await viewModel.imageDownloader.fetchSvgImage(from: viewModel.carrier.logoSVGUrl) ?? placeholderLogo
         }
     }
 }
@@ -31,11 +29,11 @@ struct RouteView: View {
 private extension RouteView {
     var timelineView: some View {
         HStack(spacing: .zero) {
-            timeDetailsView(field: .left, title: route.departureTime)
+            timeDetailsView(field: .left, title: viewModel.route.departureTime)
             Spacer()
-            timeDetailsView(field: .center, title: route.durationTime)
+            timeDetailsView(field: .center, title:  viewModel.route.durationTime)
             Spacer()
-            timeDetailsView(field: .right, title: route.arrivalTime)
+            timeDetailsView(field: .right, title: viewModel.route.arrivalTime)
         }
         .background(
             lineView

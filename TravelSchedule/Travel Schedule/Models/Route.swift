@@ -10,7 +10,7 @@ struct Route: Hashable, Identifiable, Sendable {
     let durationTime: String
     let connectionStation: String
     let isDirect: Bool
-    let carrierCode: Int
+    var carrierCode: Int
     
     init(
         code: String,

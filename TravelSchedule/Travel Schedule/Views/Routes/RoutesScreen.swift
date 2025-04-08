@@ -5,7 +5,7 @@ struct RoutesScreen: View {
     // MARK: - Properties
     @State private var isError: Bool = false
     @ObservedObject var viewModel: RoutesScreenViewModel
-    
+    @ObservedObject var viewModel2: RouteViewModel
     // MARK: - Body
     var body: some View {
         VStack(spacing: .zero) {
@@ -66,12 +66,12 @@ private extension RoutesScreen {
     
     var routesView: some View {
         ScrollView(.vertical, showsIndicators: false) {
-            ForEach(viewModel.filteredRoutes) { route in
-                if let carrier = viewModel.carriers.first(where: { $0.code == route.carrierCode }) {
+            ForEach(viewModel.filteredRoutes) {route in
+                if let carrier = viewModel.carriers.first(where: { $0.code == viewModel2.route.carrierCode }) {
                     NavigationLink {
-                        CarrierView(carrier: carrier, imageDownloader: viewModel.imageDownloader)
+                        CarrierView(view: CarrierViewModel(carrier: carrier, imageDownloader: viewModel.imageDownloader))
                     } label: {
-                        RouteView(route: route, carrier: carrier, imageDownloader: viewModel.imageDownloader)
+                        RouteView(viewModel: RouteViewModel(route: route, carrier: carrier, imageDownloader: viewModel.imageDownloader))
                     }
                 }
             }
@@ -81,7 +81,7 @@ private extension RoutesScreen {
     
     var buttonView: some View {
         NavigationLink {
-            FilterView(viewModelFilter: $viewModel.filter)
+            FilterView(viewModel: FilterViewModel(viewModelFilter: viewModel.filter))
         } label: {
             buttonTitleView
         }
@@ -126,8 +126,8 @@ private extension RoutesScreen {
                 destinations: Mocks.Destinations.sample,
                 routes: Mocks.Routes.all,
                 routesDownloader: RoutesDownloader(yandexAPIService: YandexAPIService(apikey: YandexAPIConfig.APIKEY)),
-                imageDownloader: ImageDownloader()
-            )
+                imageDownloader: ImageDownloader()),
+            viewModel2: RouteViewModel(route: Mocks.Routes.all[0], carrier: Mocks.Carriers.rzhd, imageDownloader: ImageDownloader())
         )
     }
 }

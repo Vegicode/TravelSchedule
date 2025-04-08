@@ -8,8 +8,6 @@
 import SwiftUI
 
 class RouteCarrierViewModel: ObservableObject {
-    
-    
     let route: Route
     let carrier: Carrier
     
